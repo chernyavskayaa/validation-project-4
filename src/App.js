@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import { CSVLink } from 'react-csv';
+import { generateData } from './generate-data';
 
-function App() {
+const App = () => {
+  const [titles, setTitles] = useState([]);
+  const [credits, setCredits] = useState([]);
+
+  const generateDummyData = () => {
+    const { titles: generatedTitles, credits: generatedCredits } = generateData();
+    setTitles(generatedTitles);
+    setCredits(generatedCredits);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <button onClick={generateDummyData}>Generate dummy data</button>
+
+      {titles?.length && credits?.length ? (
+        <div>
+          <CSVLink data={titles} filename={'titles.csv'}>
+            Download Titles
+          </CSVLink>
+          <br />
+          <CSVLink data={credits} filename={'credits.csv'}>
+            Download Credits
+          </CSVLink>
+        </div>
+      ) : null}
     </div>
   );
-}
+};
 
-export default App;
+export { App };
